@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2><a href="/" style="color: black;">Todo List</a></h2>
+        <p>Orginize your works</p>
+        <hr>
+        <form action="/add" method="POST">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="title" placeholder="Enter a title">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Save</button>
+                </div>
+            </div>
+        </form>
+        {% include 'includes/messages.html' %}
+        {% if list %}
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>TITLE</th>
+                    <th>STATUS</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in list %}
+                <tr>
+                    <td>{{ i.id }}</td>
+                    <td>{{ i.title[:30] }}..</td>
+                    {% if i.complete == True %}
+                    <td>Complete</td>
+                    {% else %}
+                    <td>Incomplete</td>
+                    {% endif %}
+                    <td>
+                        {% if i.complete == True %}
+                        <button class="btn btn-success btn-sm" title="complete the row" disabled> <i class="fa fa-check"></i></button>
+                        {% else %}
+                        <a href="/complete/{{ i.id }}" class="btn btn-success btn-sm" title="complete the row"> <i class="fa fa-check"></i></a>
+                        {% endif %}
+                        <a href="/remove/{{ i.id }}" class="btn btn-danger btn-sm"> <i class="fa fa-times"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="alert alert-warning" role="alert">
+            There is no todo ! 
+        </div>
+        {% endif %}
+
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+        <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+        <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
+        <script>
+            CKEDITOR.replace('content', { allowedContent: true });
+        </script>
+</body>
+
+</html>
